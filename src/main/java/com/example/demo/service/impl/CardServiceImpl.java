@@ -6,7 +6,9 @@ import com.example.demo.model.exceptions.DuplicateDataException;
 import com.example.demo.repository.CardRepository;
 import com.example.demo.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +40,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
+    @Async("taskExecutorFirst")
     public void deleteById(int id) {
         cardRepository.deleteById(id);
     }
@@ -47,9 +50,23 @@ public class CardServiceImpl implements CardService {
         return cardRepository.getByNumber(number);
     }
 
+
     @Override
+    @Transactional
+    @Async("taskExecutorSecond")
     public void update(Card card) throws DuplicateDataException {
         DuplicateDataException.check(cardRepository.existsByNumberAndIdNot(card.getNumber(),card.getId()),"duplicate.card");
-        cardRepository.save(card);
+        Card fromDb = cardRepository.getById(card.getId());
+        fromDb.setBalance(card.getBalance());
+        fromDb.setCvv(card.getCvv());
+        fromDb.setHolder(card.getHolder());
+        fromDb.setNumber(card.getNumber());
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 }

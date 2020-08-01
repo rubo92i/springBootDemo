@@ -30,7 +30,8 @@ public class CardController {
     }
 
     @PostMapping
-    public ResponseEntity add(@RequestBody Card card) throws DuplicateDataException {
+    public ResponseEntity add(@RequestBody Card card, @RequestHeader("OriginModule") String accept) throws DuplicateDataException {
+        log.info("Requested module is : {}", accept);
         cardService.add(card);
         return ResponseEntity.ok(card);
     }
@@ -53,18 +54,19 @@ public class CardController {
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable int id, HttpServletRequest request) {
         log.info("Delete request for Card");
-        if (log.isDebugEnabled()){
-            log.debug("Delete request for Card with id {} from ip {}",id,request.getRemoteAddr());
+        if (log.isDebugEnabled()) {
+            log.debug("Delete request for Card with id {} from ip {}", id, request.getRemoteAddr());
         }
         cardService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity update(@RequestBody Card card, @PathVariable int id) throws DuplicateDataException {
         card.setId(id);
         cardService.update(card);
-        return ResponseEntity.ok(card);
+        return ResponseEntity.ok("Your card is updated");
     }
 
 }

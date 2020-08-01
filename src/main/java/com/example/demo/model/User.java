@@ -34,4 +34,7 @@ public class User {
     private int status;
 
 
+    @OneToOne
+    private Card card;
+
 }
