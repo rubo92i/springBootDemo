@@ -22,7 +22,7 @@ public class Car {
 
     private String model;
 
-     private String vendor;
+    private String vendor;
 
 
     private String vin;

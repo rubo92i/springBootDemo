@@ -44,4 +44,8 @@ public class DemoApplication {
         taskExecutor.setQueueCapacity(25000);
         return taskExecutor;
     }
+
+
+    //basic authroization
+    // Authorization header with value like 'Basic base64Encoded(username:password)'
 }

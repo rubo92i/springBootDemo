@@ -2,8 +2,11 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Card;
 import lombok.extern.log4j.Log4j2;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.*;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,6 +14,7 @@ import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.concurrent.Executor;
 
 @Log4j2
 @RestController
@@ -38,9 +42,10 @@ public class RestTemplateTestController {
         card.setCvv("987");
         card.setBalance(2000);
 
-        try {
+          try {
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add("OriginModule", "demo2");
+            httpHeaders.add("Authorization","Basic "+ Base64.encodeBase64String("admin:admin_password".getBytes()));
 
             HttpEntity<Card> httpEntity = new HttpEntity<>(card, httpHeaders);
             ResponseEntity<Card> cardResponseEntity = restTemplate.exchange("http://localhost:8080/api/cards", HttpMethod.POST, httpEntity, Card.class);

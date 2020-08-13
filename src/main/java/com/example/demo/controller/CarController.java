@@ -7,16 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
 
 
 @RestController
-@RequestMapping("/car")
+@RequestMapping("/api/car")
 public class CarController {
-
 
     @Autowired
     private CarService carService;
@@ -24,12 +27,14 @@ public class CarController {
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @GetMapping(path = "/test1", produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    List<Car> getAllByBody() {
+    public @ResponseBody List<Car> getAllByBody() {
         return carService.getAll();
     }
 
 
+    // @Secured("ROLE_role1")
+    // @PreAuthorize("hasRole('ROLE_role1')")
+    @RolesAllowed(value = {"ROLE_role1","ROLE_role2"})
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getAll() {
         return ResponseEntity.ok(carService.getAll());
@@ -43,7 +48,8 @@ public class CarController {
 
     @PostMapping(/*spasum a back@ */consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity add(@Valid @RequestBody Car car) throws DuplicateDataException {
-        return ResponseEntity.ok(carService.save(car));
+        carService.save(car);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
