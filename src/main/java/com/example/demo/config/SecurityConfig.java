@@ -1,10 +1,7 @@
 package com.example.demo.config;
 
 
-import com.example.demo.util.CustomEncoder;
-import com.example.demo.util.Md5Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -38,8 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
                 .antMatchers("/api/accounts/**").permitAll()
+                .antMatchers("/api/interconnect/**").hasRole("INTERCONNECT")
                 .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET,"/api/cards/**").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/api/cards/**").hasRole("USER")
                 .antMatchers("/api/**").authenticated();
 
     }
@@ -47,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-         auth
+        auth
                 .userDetailsService(userDetailsServiceImpl)
                 .passwordEncoder(passwordEncoder);
 
@@ -57,7 +55,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("admin").password("admin_password").roles("role1","admin").and()
                 .passwordEncoder(CustomEncoder.getInstance());*/
     }
-
 
 
 }
