@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.exceptions.NotFoundException;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class UserController {
 
     @RolesAllowed("ROLE_ADMIN")
     @PostMapping("/{id}/make-admin")
-    public ResponseEntity makeAdmin(@PathVariable("id") int userId) {
+    public ResponseEntity makeAdmin(@PathVariable("id") int userId) throws NotFoundException {
         userService.makeAdmin(userId);
         return ResponseEntity.ok().build();
     }
