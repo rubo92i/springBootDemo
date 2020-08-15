@@ -25,6 +25,7 @@ public class CardController {
 
 
     @GetMapping
+    @RolesAllowed("ROLE_ADMIN")
     public ResponseEntity getAll() {
         List<Card> cards = cardService.findAll();
         return ResponseEntity.status(200).body(cards);

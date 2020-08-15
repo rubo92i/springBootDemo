@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.util.Md5Encoder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -9,6 +10,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 @EnableAsync
@@ -45,6 +47,10 @@ public class DemoApplication {
         return taskExecutor;
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new Md5Encoder();
+    }
 
     //basic authroization
     // Authorization header with value like 'Basic base64Encoded(username:password)'
