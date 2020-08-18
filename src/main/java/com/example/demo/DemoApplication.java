@@ -11,7 +11,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.web.client.RestTemplate;
+
+import javax.sql.DataSource;
 
 @EnableAsync
 @SpringBootApplication
@@ -51,6 +55,12 @@ public class DemoApplication {
     public PasswordEncoder passwordEncoder(){
         return new Md5Encoder();
     }
+
+    @Bean
+    public TokenStore tokenStore(DataSource dataSource){
+        return new JdbcTokenStore(dataSource);
+    }
+
 
     //basic authroization
     // Authorization header with value like 'Basic base64Encoded(username:password)'

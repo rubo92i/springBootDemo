@@ -13,8 +13,8 @@ import java.util.UUID;
 @Component
 public class FileStoreHelper {
 
-    private String root = "C://users/ruben.manukyan/desktop/files/";
-
+    private String root = "C://users/ruben.manukyan/desktop/files/";//2020/08/18/sgkduvdv1d5x1vd51s.jpg
+                                                                    //2020/08/19/csdfsd15fs56d5.jpg
     public String buildName(String extension) {
         Calendar calendar = Calendar.getInstance();
         return root + calendar.get(Calendar.YEAR) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.DAY_OF_MONTH)
