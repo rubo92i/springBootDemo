@@ -44,7 +44,7 @@ public class Oauth2Configuration extends ResourceServerConfigurerAdapter {
                 .and().authorizeRequests()
                 .antMatchers("/api/accounts/**").permitAll()
                 .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/cards/**").hasRole("USER")
+                //.antMatchers(HttpMethod.GET, "/api/cards/**").hasRole("USER")
                 .antMatchers("/api/**").authenticated();
     }
 
