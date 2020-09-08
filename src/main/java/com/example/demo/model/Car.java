@@ -8,11 +8,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Entity
-public class Car {
+public class Car implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
