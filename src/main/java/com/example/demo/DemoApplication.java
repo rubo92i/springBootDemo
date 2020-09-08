@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import com.example.demo.util.Md5Encoder;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -31,6 +33,11 @@ public class DemoApplication {
         return restTemplateBuilder.build();
     }
 
+
+    @Bean
+    public MessageConverter jsonMessageConverter() {
+        return new Jackson2JsonMessageConverter();
+    }
 
     @Bean
     @Primary
